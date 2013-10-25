@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlideRoom", "SlideRoom\SlideRoom.csproj", "{FF2CC7B5-8618-4504-AC0B-49676E5E9D4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlideRoomTest", "SlideRoomTest\SlideRoomTest.csproj", "{31829486-F070-4299-9CD6-AD86FDC72638}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF2CC7B5-8618-4504-AC0B-49676E5E9D4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF2CC7B5-8618-4504-AC0B-49676E5E9D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF2CC7B5-8618-4504-AC0B-49676E5E9D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF2CC7B5-8618-4504-AC0B-49676E5E9D4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31829486-F070-4299-9CD6-AD86FDC72638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31829486-F070-4299-9CD6-AD86FDC72638}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31829486-F070-4299-9CD6-AD86FDC72638}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31829486-F070-4299-9CD6-AD86FDC72638}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
