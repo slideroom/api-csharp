@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Configuration;
+using System.Reflection;
 
 namespace SlideRoom
 {
@@ -108,8 +109,9 @@ namespace SlideRoom
         public HttpWebResponse GetRawResponse(string path, NameValueCollection nvc)
         {
             var url = BuildURL(path, nvc);
-            var request = HttpWebRequest.Create(url);
+            var request = HttpWebRequest.Create(url) as HttpWebRequest;
             request.Method = "GET";
+            request.UserAgent = "SlideRoom .NET client (" + Assembly.GetExecutingAssembly().GetName().Version.ToString() + ")";
 
             try
             {
@@ -145,7 +147,7 @@ namespace SlideRoom
             {
                 var responseText = ReadEntireResponse(res);
                 var exceptionResponse = JsonConvert.DeserializeObject<SlideRoomAPIExceptionResponse>(responseText);
-                throw new SlideRoomAPIException(exceptionResponse.Message, res.StatusCode);
+                throw new SlideRoomAPIException(exceptionResponse.Message);
             }
             catch (Exception e)
             {
