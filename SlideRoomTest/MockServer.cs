@@ -6,15 +6,27 @@ using System.Threading;
 
 namespace SlideRoomTest
 {
-    class MockServer
+    class MockServer : IDisposable
     {
         private static int _port = 20240;
 
-        public static void Run(MockResponse r, Action<int> onStarted)
-        {
-            var listener = new HttpListener();
+        private MockResponse mockResponse { get; set; }
+        private HttpListener listener { get; set; }
+        public int Port { get; set; }
 
-            listener.Prefixes.Add("http://localhost:" + _port + "/");
+        public MockServer(MockResponse res)
+        {
+            mockResponse = res;
+            Port = _port;
+            _port += 1;
+
+            Run();
+        }
+
+        private void Run()
+        {
+            listener = new HttpListener();
+            listener.Prefixes.Add("http://localhost:" + Port + "/");
 
             // TODO: need a way to catch an already listening exception, and just try the next port
             listener.Start();
@@ -30,9 +42,9 @@ namespace SlideRoomTest
                             var ctx = c as HttpListenerContext;
                             try
                             {
-                                byte[] buf = Encoding.UTF8.GetBytes(r.Body);
-                                ctx.Response.Headers.Add("Content-Type", r.ContentType);
-                                ctx.Response.StatusCode = (int)r.Code;
+                                byte[] buf = Encoding.UTF8.GetBytes(mockResponse.Body);
+                                ctx.Response.Headers.Add("Content-Type", mockResponse.ContentType);
+                                ctx.Response.StatusCode = (int)mockResponse.Code;
                                 ctx.Response.ContentLength64 = buf.Length;
                                 ctx.Response.OutputStream.Write(buf, 0, buf.Length);
                             }
@@ -47,22 +59,12 @@ namespace SlideRoomTest
                 }
                 catch { }
             });
+        }
 
-
-            try
-            {
-                onStarted(_port);
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                listener.Stop();
-                listener.Close();
-                _port += 1;
-            }
+        public void Dispose()
+        {
+            listener.Stop();
+            listener.Close();
         }
     }
 }

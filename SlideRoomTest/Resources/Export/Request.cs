@@ -16,9 +16,9 @@ namespace SlideRoomTest.Resources.Export
                 Body = @"{ ""token"": 123, ""submissions"": 456, ""message"": ""test""}"
             };
 
-            SlideRoomTest.TestClient.GetTestClient(res, (c) =>
+            using (var c = new TestClient(res))
             {
-                var actualResult = c.Export.Request("test", SlideRoom.Resources.RequestFormat.Csv);
+                var actualResult = c.Client.Export.Request("test", SlideRoom.Resources.RequestFormat.Csv);
 
                 var expectedResult = new SlideRoom.Resources.RequestResult()
                 {
@@ -30,7 +30,7 @@ namespace SlideRoomTest.Resources.Export
                 Assert.AreEqual(expectedResult.Message, actualResult.Message);
                 Assert.AreEqual(expectedResult.Submissions, actualResult.Submissions);
                 Assert.AreEqual(expectedResult.Token, actualResult.Token);
-            });
+            }
         }
 
         [TestMethod]
@@ -43,11 +43,11 @@ namespace SlideRoomTest.Resources.Export
                 Body = @"{ ""message"": ""Invalid Format"" }"
             };
 
-            TestClient.GetTestClient(res, (c) =>
+            using (var c = new TestClient(res))
             {
                 try
                 {
-                    c.Export.Request("test", SlideRoom.Resources.RequestFormat.Csv);
+                    c.Client.Export.Request("test", SlideRoom.Resources.RequestFormat.Csv);
                     Assert.Fail("should throw an exception");
                 }
                 catch (SlideRoom.SlideRoomAPIException e)
@@ -59,7 +59,7 @@ namespace SlideRoomTest.Resources.Export
                 {
                     Assert.Fail("should throw a SlideRoomAPIException");
                 }
-            });
+            }
         }
     }
 }

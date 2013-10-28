@@ -46,11 +46,12 @@ namespace SlideRoomTest
                 Body = @"{ ""mess"
             };
 
-            TestClient.GetTestClient(res, (c) =>
+
+            using (var c = new TestClient(res))
             {
                 try
                 {
-                    c.GetRawResponse("bad", new NameValueCollection());
+                    c.Client.GetRawResponse("bad", new NameValueCollection());
                     Assert.Fail("should throw an exception");
                 }
                 catch (SlideRoom.SlideRoomAPIException e)
@@ -62,7 +63,7 @@ namespace SlideRoomTest
                 {
                     Assert.Fail("should throw a SlideRoomAPIException");
                 }
-            });
+            }
         }
 
         [TestMethod]
@@ -104,11 +105,11 @@ namespace SlideRoomTest
                 Body = @"{ ""message"": """ + message + @""" } "
             };
 
-            TestClient.GetTestClient(res, (c) =>
+            using (var c = new TestClient(res))
             {
                 try
                 {
-                    c.GetRawResponse("bad", new NameValueCollection());
+                    c.Client.GetRawResponse("bad", new NameValueCollection());
                     Assert.Fail("should throw an exception");
                 }
                 catch (SlideRoom.SlideRoomAPIException e)
@@ -120,7 +121,7 @@ namespace SlideRoomTest
                 {
                     Assert.Fail("should throw a SlideRoomAPIException");
                 }
-            });
+            }
         }
     }
 }

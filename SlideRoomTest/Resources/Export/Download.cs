@@ -18,9 +18,9 @@ namespace SlideRoomTest.Resources.Export
                 Body = ""
             };
 
-            SlideRoomTest.TestClient.GetTestClient(res, (c) =>
+            using (var c = new TestClient(res))
             {
-                var actualResult = c.Export.Download(123);
+                var actualResult = c.Client.Export.Download(123);
 
                 var expectedResult = new SlideRoom.Resources.DownloadResult()
                 {
@@ -30,7 +30,7 @@ namespace SlideRoomTest.Resources.Export
 
                 Assert.AreEqual(actualResult.ExportStream, expectedResult.ExportStream);
                 Assert.AreEqual(actualResult.Pending, expectedResult.Pending);
-            });
+            }
         }
 
 
@@ -44,9 +44,9 @@ namespace SlideRoomTest.Resources.Export
                 Body = "test,report"
             };
 
-            SlideRoomTest.TestClient.GetTestClient(res, (c) =>
+            using (var c = new TestClient(res))
             {
-                var actualResult = c.Export.Download(123);
+                var actualResult = c.Client.Export.Download(123);
 
                 Assert.IsFalse(actualResult.Pending);
                 Assert.IsNotNull(actualResult.ExportStream);
@@ -58,7 +58,7 @@ namespace SlideRoomTest.Resources.Export
                 }
 
                 Assert.AreEqual("test,report", actualReport);
-            });
+            }
         }
 
 
@@ -72,11 +72,11 @@ namespace SlideRoomTest.Resources.Export
                 Body = @"{ ""message"": ""Export no longer available."" }"
             };
 
-            SlideRoomTest.TestClient.GetTestClient(res, (c) =>
+            using (var c = new TestClient(res))
             {
                 try
                 {
-                    c.Export.Download(123);
+                    c.Client.Export.Download(123);
                     Assert.Fail("should throw an exception");
                 }
                 catch (SlideRoom.SlideRoomAPIException e)
@@ -88,7 +88,7 @@ namespace SlideRoomTest.Resources.Export
                 {
                     Assert.Fail("should throw a SlideRoomAPIException");
                 }
-            });
+            }
         }
     }
 }

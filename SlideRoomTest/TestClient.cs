@@ -2,15 +2,21 @@
 
 namespace SlideRoomTest
 {
-    public class TestClient
+    public class TestClient : IDisposable
     {
-        public static void GetTestClient(MockResponse res, Action<SlideRoom.SlideRoomClient> runner)
+        private MockServer server { get; set; }
+
+        public SlideRoom.SlideRoomClient Client { get; set; }
+
+        public TestClient(MockResponse res)
         {
-            MockServer.Run(res, (port) =>
-            {
-                SlideRoom.SlideRoomClient client = new SlideRoom.SlideRoomClient("123", "456", "test", "test@test.com", "http://localhost:" + port + "/");
-                runner(client);
-            });
+            server = new MockServer(res);
+            Client = new SlideRoom.SlideRoomClient("123", "456", "test", "test@test.com", "http://localhost:" + server.Port + "/");
+        }
+
+        public void Dispose()
+        {
+            server.Dispose();
         }
     }
 }
