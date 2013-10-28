@@ -139,7 +139,7 @@ namespace SlideRoom
         }
 
 
-        public void HandleBadResponse(HttpWebResponse res)
+        private void HandleBadResponse(HttpWebResponse res)
         {
             try
             {
