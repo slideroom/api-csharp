@@ -60,7 +60,7 @@ namespace SlideRoomTest.Resources.Export
                     actualReport = reader.ReadToEnd();
                 }
 
-                Assert.AreEqual(actualReport, "test,report");
+                Assert.AreEqual("test,report", actualReport);
             });
         }
 
@@ -84,8 +84,8 @@ namespace SlideRoomTest.Resources.Export
                 }
                 catch (SlideRoom.SlideRoomAPIException e)
                 {
-                    Assert.AreEqual(e.Message, "Export no longer available.");
-                    Assert.AreEqual(e.StatusCode, System.Net.HttpStatusCode.Gone);
+                    Assert.AreEqual("Export no longer available.", e.Message);
+                    Assert.AreEqual(System.Net.HttpStatusCode.Gone, e.StatusCode);
                 }
                 catch (Exception e)
                 {

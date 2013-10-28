@@ -31,9 +31,9 @@ namespace SlideRoomTest.Resources.Export
                     Token = 123
                 };
 
-                Assert.AreEqual(actualResult.Message, expectedResult.Message);
-                Assert.AreEqual(actualResult.Submissions, expectedResult.Submissions);
-                Assert.AreEqual(actualResult.Token, expectedResult.Token);
+                Assert.AreEqual(expectedResult.Message, actualResult.Message);
+                Assert.AreEqual(expectedResult.Submissions, actualResult.Submissions);
+                Assert.AreEqual(expectedResult.Token, actualResult.Token);
             });
         }
 
@@ -56,8 +56,8 @@ namespace SlideRoomTest.Resources.Export
                 }
                 catch (SlideRoom.SlideRoomAPIException e)
                 {
-                    Assert.AreEqual(e.Message, "Invalid Format");
-                    Assert.AreEqual(e.StatusCode, System.Net.HttpStatusCode.NotFound);
+                    Assert.AreEqual("Invalid Format", e.Message);
+                    Assert.AreEqual(System.Net.HttpStatusCode.NotFound, e.StatusCode);
                 }
                 catch (Exception e)
                 {

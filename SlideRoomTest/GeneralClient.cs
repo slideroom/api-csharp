@@ -20,12 +20,23 @@ namespace SlideRoomTest
 
             NameValueCollection params1 = new NameValueCollection();
             params1.Add("email", "test@test.com");
-            Assert.AreEqual(SlideRoom.SlideRoomClient.SignParameters(params1, apiKey, accessKey), "nDRWry9G/lr8S9UQKlC1Ih6csUs=");
+            Assert.AreEqual("nDRWry9G/lr8S9UQKlC1Ih6csUs=", SlideRoom.SlideRoomClient.SignParameters(params1, apiKey, accessKey));
 
 
             NameValueCollection params2 = new NameValueCollection();
             params2.Add("email", "tEst@tEsT.cOm");
-            Assert.AreEqual(SlideRoom.SlideRoomClient.SignParameters(params2, apiKey, accessKey), "nDRWry9G/lr8S9UQKlC1Ih6csUs=");
+            Assert.AreEqual("nDRWry9G/lr8S9UQKlC1Ih6csUs=", SlideRoom.SlideRoomClient.SignParameters(params2, apiKey, accessKey));
+
+            // test ordering
+            NameValueCollection params3 = new NameValueCollection();
+            params3.Add("email", "test@test.com");
+            params3.Add("export", "TestExport");
+            Assert.AreEqual("02R1j+skg0jwXGyoErb5zdq0r38=", SlideRoom.SlideRoomClient.SignParameters(params3, apiKey, accessKey));
+
+            NameValueCollection params4 = new NameValueCollection();
+            params4.Add("export", "TestExport");
+            params4.Add("email", "test@test.com");
+            Assert.AreEqual("02R1j+skg0jwXGyoErb5zdq0r38=", SlideRoom.SlideRoomClient.SignParameters(params4, apiKey, accessKey));
         }
 
 
@@ -48,8 +59,8 @@ namespace SlideRoomTest
                 }
                 catch (SlideRoom.SlideRoomAPIException e)
                 {
-                    Assert.AreEqual(e.Message, "Unterminated string. Expected delimiter: \". Path '', line 1, position 7.");
-                    Assert.AreEqual(e.StatusCode, HttpStatusCode.InternalServerError);
+                    Assert.AreEqual("Unterminated string. Expected delimiter: \". Path '', line 1, position 7.", e.Message);
+                    Assert.AreEqual(HttpStatusCode.InternalServerError, e.StatusCode);
                 }
                 catch (Exception e)
                 {
@@ -106,8 +117,8 @@ namespace SlideRoomTest
                 }
                 catch (SlideRoom.SlideRoomAPIException e)
                 {
-                    Assert.AreEqual(e.Message, message);
-                    Assert.AreEqual(e.StatusCode, code);
+                    Assert.AreEqual(message, e.Message);
+                    Assert.AreEqual(code, e.StatusCode);
                 }
                 catch (Exception e)
                 {
