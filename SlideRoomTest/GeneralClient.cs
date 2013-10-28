@@ -58,7 +58,7 @@ namespace SlideRoomTest
                     Assert.AreEqual("Unterminated string. Expected delimiter: \". Path '', line 1, position 7.", e.Message);
                     Assert.AreEqual(HttpStatusCode.InternalServerError, e.StatusCode);
                 }
-                catch (Exception e)
+                catch
                 {
                     Assert.Fail("should throw a SlideRoomAPIException");
                 }
@@ -116,7 +116,7 @@ namespace SlideRoomTest
                     Assert.AreEqual(message, e.Message);
                     Assert.AreEqual(code, e.StatusCode);
                 }
-                catch (Exception e)
+                catch
                 {
                     Assert.Fail("should throw a SlideRoomAPIException");
                 }

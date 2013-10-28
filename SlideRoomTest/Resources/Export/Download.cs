@@ -84,7 +84,7 @@ namespace SlideRoomTest.Resources.Export
                     Assert.AreEqual("Export no longer available.", e.Message);
                     Assert.AreEqual(System.Net.HttpStatusCode.Gone, e.StatusCode);
                 }
-                catch (Exception e)
+                catch
                 {
                     Assert.Fail("should throw a SlideRoomAPIException");
                 }

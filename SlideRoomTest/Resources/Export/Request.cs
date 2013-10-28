@@ -55,7 +55,7 @@ namespace SlideRoomTest.Resources.Export
                     Assert.AreEqual("Invalid Format", e.Message);
                     Assert.AreEqual(System.Net.HttpStatusCode.NotFound, e.StatusCode);
                 }
-                catch (Exception e)
+                catch
                 {
                     Assert.Fail("should throw a SlideRoomAPIException");
                 }
