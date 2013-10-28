@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Specialized;
 using System.IO;
+using System.Net;
 
 namespace SlideRoom.Resources
 {
@@ -16,13 +17,13 @@ namespace SlideRoom.Resources
 
         public RequestResult Request(string exportName, RequestFormat format, string savedSearch = null)
         {
-            NameValueCollection nvc = new NameValueCollection();
-            nvc.Add("export", exportName);
-            nvc.Add("format", format.ToString().ToLower());
+            var nvc = new NameValueCollection();
+            nvc["export"] = exportName;
+            nvc["format"] = format.ToString().ToLower();
 
             if (!String.IsNullOrEmpty(savedSearch))
             {
-                nvc.Add("ss", savedSearch);
+                nvc["ss"] = savedSearch;
             }
 
             return client.GetExpectedJSONResult<RequestResult>("export/request", nvc);
@@ -30,12 +31,12 @@ namespace SlideRoom.Resources
 
         public DownloadResult Download(int token)
         {
-            NameValueCollection nvc = new NameValueCollection();
-            nvc.Add("token", token.ToString());
+            var nvc = new NameValueCollection();
+            nvc["token"] = token.ToString();
 
             var rawResponse = client.GetRawResponse("export/download", nvc);
 
-            if (rawResponse.StatusCode == System.Net.HttpStatusCode.OK)
+            if (rawResponse.StatusCode == HttpStatusCode.OK)
             {
                 return new DownloadResult()
                 {

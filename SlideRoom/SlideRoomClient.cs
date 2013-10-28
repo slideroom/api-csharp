@@ -29,11 +29,7 @@ namespace SlideRoom
 
         public SlideRoomClient(string apiKey, string accessKey, string orgainationCode, string emailAddress, string baseUrl)
         {
-            BaseUrl = baseUrl;
-            if (BaseUrl.EndsWith("/"))
-            {
-                BaseUrl = BaseUrl.TrimEnd('/');
-            }
+            BaseUrl = baseUrl.TrimEnd('/');
 
             APIKey = apiKey;
             AccessKey = accessKey;
@@ -70,14 +66,14 @@ namespace SlideRoom
 
         public static string SignParameters(NameValueCollection nvc, string apiHashKey, string accessKey)
         {
-            var collectionToSign = new SortedDictionary<string, string>();
+            var collectionToSign = new SortedDictionary<string, string>();            
             foreach (var key in nvc.AllKeys)
             {
-                collectionToSign.Add(key, nvc[key]);
+                collectionToSign[key] = nvc[key];
             }
-            collectionToSign.Add("access-key", accessKey);
+            collectionToSign["access-key"] = accessKey;
 
-            var stringToSign = String.Join("\n", collectionToSign.ToList().ConvertAll((kvp) => (kvp.Key + "=" + kvp.Value)).ToArray());
+            var stringToSign = String.Join("\n", collectionToSign.ToList().ConvertAll(kvp => kvp.Key + "=" + kvp.Value).ToArray());
             return Convert.ToBase64String(new HMACSHA1(Encoding.UTF8.GetBytes(apiHashKey)).ComputeHash(Encoding.UTF8.GetBytes(stringToSign.ToLower())));
         }
 
@@ -87,21 +83,21 @@ namespace SlideRoom
             var now = (long)((TimeSpan)(DateTime.Now.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0))).TotalSeconds;
             var expires = now + RequestLifespan.TotalSeconds;
 
-            NameValueCollection paramBuilder = HttpUtility.ParseQueryString(String.Empty);
+            var paramBuilder = HttpUtility.ParseQueryString(String.Empty);
 
-            paramBuilder.Add("email", EmailAddress);
-            paramBuilder.Add("expires", expires.ToString());
+            paramBuilder["email"] = EmailAddress;
+            paramBuilder["expires"] = expires.ToString();
 
             foreach (var key in paramsToSend.AllKeys)
             {
-                paramBuilder.Add(key, paramsToSend[key]);
+                paramBuilder[key] = paramsToSend[key];
             }
 
             var signature = SignParameters(paramBuilder, APIKey, AccessKey);
 
-            paramBuilder.Add("signature", signature);
+            paramBuilder["signature"] = signature;
 
-            return BaseUrl + "/" + OrganizationCode + "/" + path + "?" + paramBuilder.ToString();
+            return BaseUrl + "/" + OrganizationCode + "/" + path + "?" + paramBuilder;
         }
 
 
@@ -127,16 +123,13 @@ namespace SlideRoom
 
         private string ReadEntireResponse(HttpWebResponse res)
         {
-            var responseText = String.Empty;
             using (var responseStream = res.GetResponseStream())
             {
                 using (var reader = new StreamReader(responseStream))
                 {
-                    responseText = reader.ReadToEnd();
+                    return reader.ReadToEnd();
                 }
             }
-
-            return responseText;
         }
 
 
