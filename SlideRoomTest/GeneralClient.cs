@@ -11,28 +11,24 @@ namespace SlideRoomTest
         [TestMethod]
         public void SignCorrectly()
         {
-            var apiKey = "123";
-            var accessKey = "456";
+            var params1 = new NameValueCollection();
+            params1["email"] = "test@test.com";
+            Assert.AreEqual("nDRWry9G/lr8S9UQKlC1Ih6csUs=", SlideRoom.SlideRoomClient.SignParameters(params1, TestClient.ApiHashKey, TestClient.AccessKey));
 
-            NameValueCollection params1 = new NameValueCollection();
-            params1.Add("email", "test@test.com");
-            Assert.AreEqual("nDRWry9G/lr8S9UQKlC1Ih6csUs=", SlideRoom.SlideRoomClient.SignParameters(params1, apiKey, accessKey));
-
-
-            NameValueCollection params2 = new NameValueCollection();
-            params2.Add("email", "tEst@tEsT.cOm");
-            Assert.AreEqual("nDRWry9G/lr8S9UQKlC1Ih6csUs=", SlideRoom.SlideRoomClient.SignParameters(params2, apiKey, accessKey));
+            var params2 = new NameValueCollection();
+            params2["email"] = "tEst@tEsT.cOm";
+            Assert.AreEqual("nDRWry9G/lr8S9UQKlC1Ih6csUs=", SlideRoom.SlideRoomClient.SignParameters(params2, TestClient.ApiHashKey, TestClient.AccessKey));
 
             // test ordering
-            NameValueCollection params3 = new NameValueCollection();
-            params3.Add("email", "test@test.com");
-            params3.Add("export", "TestExport");
-            Assert.AreEqual("02R1j+skg0jwXGyoErb5zdq0r38=", SlideRoom.SlideRoomClient.SignParameters(params3, apiKey, accessKey));
+            var params3 = new NameValueCollection();
+            params3["email"] = "test@test.com";
+            params3["export"] = "TestExport";
+            Assert.AreEqual("02R1j+skg0jwXGyoErb5zdq0r38=", SlideRoom.SlideRoomClient.SignParameters(params3, TestClient.ApiHashKey, TestClient.AccessKey));
 
-            NameValueCollection params4 = new NameValueCollection();
-            params4.Add("export", "TestExport");
-            params4.Add("email", "test@test.com");
-            Assert.AreEqual("02R1j+skg0jwXGyoErb5zdq0r38=", SlideRoom.SlideRoomClient.SignParameters(params4, apiKey, accessKey));
+            var params4 = new NameValueCollection();
+            params4["export"] = "TestExport";
+            params4["email"] = "test@test.com";
+            Assert.AreEqual("02R1j+skg0jwXGyoErb5zdq0r38=", SlideRoom.SlideRoomClient.SignParameters(params4, TestClient.ApiHashKey, TestClient.AccessKey));
         }
 
 
