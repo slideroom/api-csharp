@@ -53,6 +53,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Extensions\NameValueCollectionExtension.cs" />
     <Compile Include="GeneralClient.cs" />
     <Compile Include="MockResponse.cs" />
     <Compile Include="MockServer.cs" />

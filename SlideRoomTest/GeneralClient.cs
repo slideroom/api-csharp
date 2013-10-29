@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using SlideRoomTest.Extensions;
 using System.Collections.Specialized;
 using System.Net;
 
@@ -122,6 +122,13 @@ namespace SlideRoomTest
                     Assert.Fail("should throw a SlideRoomAPIException");
                 }
             }
+        }
+
+        public static void TestRequiredParameters(NameValueCollection query)
+        {
+            query.ContainsAndEquals("email", TestClient.EmailAddress);
+            query.Contains("expires");
+            query.Contains("signature");
         }
     }
 }

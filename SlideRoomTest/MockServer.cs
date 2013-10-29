@@ -12,12 +12,14 @@ namespace SlideRoomTest
 
         private MockResponse mockResponse { get; set; }
         private HttpListener listener { get; set; }
+        private Action<HttpListenerRequest> OnRequest { get; set; }
         public int Port { get; set; }
 
-        public MockServer(MockResponse res)
+        public MockServer(MockResponse res, Action<HttpListenerRequest> onRequest = null)
         {
             mockResponse = res;
             Port = _port;
+            OnRequest = onRequest;
             _port += 1;
 
             Run();
@@ -42,6 +44,11 @@ namespace SlideRoomTest
                             var ctx = c as HttpListenerContext;
                             try
                             {
+                                if (OnRequest != null)
+                                {
+                                    OnRequest(ctx.Request);
+                                }
+
                                 byte[] buf = Encoding.UTF8.GetBytes(mockResponse.Body);
                                 ctx.Response.Headers.Add("Content-Type", mockResponse.ContentType);
                                 ctx.Response.StatusCode = (int)mockResponse.Code;

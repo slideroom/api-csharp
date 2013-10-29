@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
+using SlideRoomTest.Extensions;
 
 namespace SlideRoomTest.Resources.Export
 {
@@ -19,6 +21,50 @@ namespace SlideRoomTest.Resources.Export
             using (var c = new TestClient(res))
             {
                 var actualResult = c.Client.Export.Request("test", SlideRoom.Resources.RequestFormat.Csv);
+
+                // test the request too..
+                var queryString = c.Request.QueryString;
+                GeneralClient.TestRequiredParameters(queryString);
+
+                queryString.ContainsAndEquals("export", "test");
+                queryString.ContainsAndEquals("format", "csv");
+                queryString.NotContains("ss");
+
+                var expectedResult = new SlideRoom.Resources.RequestResult()
+                {
+                    Message = "test",
+                    Submissions = 456,
+                    Token = 123
+                };
+
+                Assert.AreEqual(expectedResult.Message, actualResult.Message);
+                Assert.AreEqual(expectedResult.Submissions, actualResult.Submissions);
+                Assert.AreEqual(expectedResult.Token, actualResult.Token);
+            }
+        }
+
+
+        [TestMethod]
+        public void GoodRequestWithSavedSearch()
+        {
+            var res = new MockResponse()
+            {
+                ContentType = "application/json",
+                Code = System.Net.HttpStatusCode.OK,
+                Body = @"{ ""token"": 123, ""submissions"": 456, ""message"": ""test""}"
+            };
+
+            using (var c = new TestClient(res))
+            {
+                var actualResult = c.Client.Export.Request("test", SlideRoom.Resources.RequestFormat.Csv, "saved search");
+
+                // test the request too..
+                var queryString = c.Request.QueryString;
+                GeneralClient.TestRequiredParameters(queryString);
+
+                queryString.ContainsAndEquals("export", "test");
+                queryString.ContainsAndEquals("format", "csv");
+                queryString.ContainsAndEquals("ss", "saved search");
 
                 var expectedResult = new SlideRoom.Resources.RequestResult()
                 {
