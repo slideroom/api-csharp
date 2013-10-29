@@ -22,7 +22,7 @@ namespace SlideRoomTest.Resources.Export
             {
                 var actualResult = c.Client.Export.Request("test", SlideRoom.Resources.RequestFormat.Csv);
 
-                // test the request too..
+                // test the request
                 var queryString = c.Request.QueryString;
                 GeneralClient.TestRequiredParameters(queryString);
 

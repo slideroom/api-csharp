@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Text;
+using SlideRoomTest.Extensions;
 
 namespace SlideRoomTest.Resources.Export
 {
@@ -47,6 +48,12 @@ namespace SlideRoomTest.Resources.Export
             using (var c = new TestClient(res))
             {
                 var actualResult = c.Client.Export.Download(123);
+
+                // test the request
+                var queryString = c.Request.QueryString;
+                GeneralClient.TestRequiredParameters(queryString);
+
+                queryString.ContainsAndEquals("token", "123");
 
                 Assert.IsFalse(actualResult.Pending);
                 Assert.IsNotNull(actualResult.ExportStream);
