@@ -5,6 +5,7 @@
 ```
 using System;
 using System.IO;
+using SlideRoom.API;
 
 namespace TestApplication
 {
@@ -12,14 +13,14 @@ namespace TestApplication
     {
         static void Main(string[] args)
         {
-            SlideRoom.SlideRoomClient client = new SlideRoom.SlideRoomClient("api key "access key "email address "organization code");
+            var client = new SlideRoomClient("api key "access key "email address "organization code");
 
-            var requestRes = client.Export.Request("export name", SlideRoom.Resources.RequestFormat.Txt);
+            var requestRes = client.Export.Request("export name", SlideRoom.API.Resources.RequestFormat.Txt);
             PrintExport(client, requestRes.Token);
             Console.ReadLine();
         }
 
-        static void PrintExport(SlideRoom.SlideRoomClient client, int token)
+        static void PrintExport(SlideRoomClient client, int token)
         {
             bool pending = true;
             while (pending == true)
@@ -45,7 +46,3 @@ namespace TestApplication
     }
 }
 ```
-
-## Installing
-
-## Documentation

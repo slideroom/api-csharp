@@ -20,7 +20,7 @@ namespace SlideRoomTest.Resources.Export
 
             using (var c = new TestClient(res))
             {
-                var actualResult = c.Client.Export.Request("test", SlideRoom.Resources.RequestFormat.Csv);
+                var actualResult = c.Client.Export.Request("test", SlideRoom.API.Resources.RequestFormat.Csv);
 
                 // test the request
                 var queryString = c.Request.QueryString;
@@ -30,7 +30,7 @@ namespace SlideRoomTest.Resources.Export
                 queryString.ContainsAndEquals("format", "csv");
                 queryString.NotContains("ss");
 
-                var expectedResult = new SlideRoom.Resources.RequestResult()
+                var expectedResult = new SlideRoom.API.Resources.RequestResult()
                 {
                     Message = "test",
                     Submissions = 456,
@@ -56,7 +56,7 @@ namespace SlideRoomTest.Resources.Export
 
             using (var c = new TestClient(res))
             {
-                var actualResult = c.Client.Export.Request("test", SlideRoom.Resources.RequestFormat.Csv, "saved search");
+                var actualResult = c.Client.Export.Request("test", SlideRoom.API.Resources.RequestFormat.Csv, "saved search");
 
                 // test the request too..
                 var queryString = c.Request.QueryString;
@@ -66,7 +66,7 @@ namespace SlideRoomTest.Resources.Export
                 queryString.ContainsAndEquals("format", "csv");
                 queryString.ContainsAndEquals("ss", "saved search");
 
-                var expectedResult = new SlideRoom.Resources.RequestResult()
+                var expectedResult = new SlideRoom.API.Resources.RequestResult()
                 {
                     Message = "test",
                     Submissions = 456,
@@ -93,10 +93,10 @@ namespace SlideRoomTest.Resources.Export
             {
                 try
                 {
-                    c.Client.Export.Request("test", SlideRoom.Resources.RequestFormat.Csv);
+                    c.Client.Export.Request("test", SlideRoom.API.Resources.RequestFormat.Csv);
                     Assert.Fail("should throw an exception");
                 }
-                catch (SlideRoom.SlideRoomAPIException e)
+                catch (SlideRoom.API.SlideRoomAPIException e)
                 {
                     Assert.AreEqual("Invalid Format", e.Message);
                     Assert.AreEqual(System.Net.HttpStatusCode.NotFound, e.StatusCode);

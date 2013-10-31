@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 
-namespace SlideRoom.Resources
+namespace SlideRoom.API.Resources
 {
     public class Export
     {

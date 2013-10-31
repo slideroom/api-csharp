@@ -1,4 +1,4 @@
-﻿namespace SlideRoom.Resources
+﻿namespace SlideRoom.API.Resources
 {
     public enum RequestFormat
     {

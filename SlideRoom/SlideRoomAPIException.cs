@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 
-namespace SlideRoom
+namespace SlideRoom.API
 {
     public class SlideRoomAPIException : Exception
     {

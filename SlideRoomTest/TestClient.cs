@@ -7,7 +7,7 @@ namespace SlideRoomTest
     {
         private MockServer server { get; set; }
 
-        public SlideRoom.SlideRoomClient Client { get; set; }
+        public SlideRoom.API.SlideRoomClient Client { get; set; }
         public HttpListenerRequest Request { get; set; }
 
         public const string ApiHashKey = "123";
@@ -18,7 +18,7 @@ namespace SlideRoomTest
         public TestClient(MockResponse res)
         {
             server = new MockServer(res, ctx => Request = ctx);
-            Client = new SlideRoom.SlideRoomClient(ApiHashKey, AccessKey, Organization, EmailAddress, "http://localhost:" + server.Port + "/");
+            Client = new SlideRoom.API.SlideRoomClient(ApiHashKey, AccessKey, Organization, EmailAddress, "http://localhost:" + server.Port + "/");
         }
 
         public void Dispose()

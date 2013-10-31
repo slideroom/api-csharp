@@ -11,7 +11,7 @@ using System.Web;
 using System.Configuration;
 using System.Reflection;
 
-namespace SlideRoom
+namespace SlideRoom.API
 {
     public class SlideRoomClient
     {

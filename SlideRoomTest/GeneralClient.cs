@@ -13,22 +13,22 @@ namespace SlideRoomTest
         {
             var params1 = new NameValueCollection();
             params1["email"] = "test@test.com";
-            Assert.AreEqual("nDRWry9G/lr8S9UQKlC1Ih6csUs=", SlideRoom.SlideRoomClient.SignParameters(params1, TestClient.ApiHashKey, TestClient.AccessKey));
+            Assert.AreEqual("nDRWry9G/lr8S9UQKlC1Ih6csUs=", SlideRoom.API.SlideRoomClient.SignParameters(params1, TestClient.ApiHashKey, TestClient.AccessKey));
 
             var params2 = new NameValueCollection();
             params2["email"] = "tEst@tEsT.cOm";
-            Assert.AreEqual("nDRWry9G/lr8S9UQKlC1Ih6csUs=", SlideRoom.SlideRoomClient.SignParameters(params2, TestClient.ApiHashKey, TestClient.AccessKey));
+            Assert.AreEqual("nDRWry9G/lr8S9UQKlC1Ih6csUs=", SlideRoom.API.SlideRoomClient.SignParameters(params2, TestClient.ApiHashKey, TestClient.AccessKey));
 
             // test ordering
             var params3 = new NameValueCollection();
             params3["email"] = "test@test.com";
             params3["export"] = "TestExport";
-            Assert.AreEqual("02R1j+skg0jwXGyoErb5zdq0r38=", SlideRoom.SlideRoomClient.SignParameters(params3, TestClient.ApiHashKey, TestClient.AccessKey));
+            Assert.AreEqual("02R1j+skg0jwXGyoErb5zdq0r38=", SlideRoom.API.SlideRoomClient.SignParameters(params3, TestClient.ApiHashKey, TestClient.AccessKey));
 
             var params4 = new NameValueCollection();
             params4["export"] = "TestExport";
             params4["email"] = "test@test.com";
-            Assert.AreEqual("02R1j+skg0jwXGyoErb5zdq0r38=", SlideRoom.SlideRoomClient.SignParameters(params4, TestClient.ApiHashKey, TestClient.AccessKey));
+            Assert.AreEqual("02R1j+skg0jwXGyoErb5zdq0r38=", SlideRoom.API.SlideRoomClient.SignParameters(params4, TestClient.ApiHashKey, TestClient.AccessKey));
         }
 
 
@@ -50,7 +50,7 @@ namespace SlideRoomTest
                     c.Client.GetRawResponse("bad", new NameValueCollection());
                     Assert.Fail("should throw an exception");
                 }
-                catch (SlideRoom.SlideRoomAPIException e)
+                catch (SlideRoom.API.SlideRoomAPIException e)
                 {
                     Assert.AreEqual("Unterminated string. Expected delimiter: \". Path '', line 1, position 7.", e.Message);
                     Assert.AreEqual(HttpStatusCode.InternalServerError, e.StatusCode);
@@ -108,7 +108,7 @@ namespace SlideRoomTest
                     c.Client.GetRawResponse("bad", new NameValueCollection());
                     Assert.Fail("should throw an exception");
                 }
-                catch (SlideRoom.SlideRoomAPIException e)
+                catch (SlideRoom.API.SlideRoomAPIException e)
                 {
                     Assert.AreEqual(message, e.Message);
                     Assert.AreEqual(code, e.StatusCode);

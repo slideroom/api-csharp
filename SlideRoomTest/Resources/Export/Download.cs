@@ -23,7 +23,7 @@ namespace SlideRoomTest.Resources.Export
             {
                 var actualResult = c.Client.Export.Download(123);
 
-                var expectedResult = new SlideRoom.Resources.DownloadResult()
+                var expectedResult = new SlideRoom.API.Resources.DownloadResult()
                 {
                     Pending = true,
                     ExportStream = null
@@ -86,7 +86,7 @@ namespace SlideRoomTest.Resources.Export
                     c.Client.Export.Download(123);
                     Assert.Fail("should throw an exception");
                 }
-                catch (SlideRoom.SlideRoomAPIException e)
+                catch (SlideRoom.API.SlideRoomAPIException e)
                 {
                     Assert.AreEqual("Export no longer available.", e.Message);
                     Assert.AreEqual(System.Net.HttpStatusCode.Gone, e.StatusCode);
