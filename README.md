@@ -1,4 +1,4 @@
-# SlideRoom SDK for C\# 
+# SlideRoom API for C\# 
 
 ## Example
 
