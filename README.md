@@ -1,48 +1,51 @@
 # SlideRoom SDK for C\# 
 
-### Example
+## Example
 
-```
-using System;
-using System.IO;
-using SlideRoom.API;
+    using System;
+    using System.IO;
+    using SlideRoom.API;
 
-namespace TestApplication
-{
-    class Program
+    namespace TestApplication
     {
-        static void Main(string[] args)
+        class Program
         {
-            var client = new SlideRoomClient("api key "access key "email address "organization code");
-
-            var requestRes = client.Export.Request("export name", SlideRoom.API.Resources.RequestFormat.Txt);
-            PrintExport(client, requestRes.Token);
-            Console.ReadLine();
-        }
-
-        static void PrintExport(SlideRoomClient client, int token)
-        {
-            bool pending = true;
-            while (pending == true)
+            static void Main(string[] args)
             {
-                var downloadRes = client.Export.Download(token);
-                pending = downloadRes.Pending;
-                if (pending == false)
+                var client = new SlideRoomClient("api key "access key "email address "organization code");
+
+                var requestRes = client.Export.Request("export name", SlideRoom.API.Resources.RequestFormat.Txt);
+                PrintExport(client, requestRes.Token);
+                Console.ReadLine();
+            }
+
+            static void PrintExport(SlideRoomClient client, int token)
+            {
+                bool pending = true;
+                while (pending == true)
                 {
-                    var responseText = String.Empty;
-                    using (var reader = new StreamReader(downloadRes.ExportStream))
+                    var downloadRes = client.Export.Download(token);
+                    pending = downloadRes.Pending;
+                    if (pending == false)
                     {
-                        responseText = reader.ReadToEnd();
+                        var responseText = String.Empty;
+                        using (var reader = new StreamReader(downloadRes.ExportStream))
+                        {
+                            responseText = reader.ReadToEnd();
+                        }
+
+                        Console.Write(responseText);
+                        break;
                     }
 
-                    Console.Write(responseText);
-                    break;
+                    // wait 10 seconds before trying again
+                    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
                 }
-
-                // wait 10 seconds before trying again
-                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
             }
         }
     }
-}
-```
+
+## Install From NuGet
+
+    PM> Install-Package SlideRoom
+
