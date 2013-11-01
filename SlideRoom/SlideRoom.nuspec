@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>SlideRoom</id>
+        <version>0.0.1</version>
+        <title>SlideRoom</title>
+        <authors>Derek Pittsinger</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>SlideRoom API Wrapper</description>
+        <tags>SlideRoom</tags>
+        <dependencies>
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Newtonsoft.Json" version="5.0.8" />
+            </group>
+        </dependencies>
+        <references />
+    </metadata>
+    <files />
+</package>
