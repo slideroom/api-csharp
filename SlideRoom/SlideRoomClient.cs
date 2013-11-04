@@ -74,7 +74,11 @@ namespace SlideRoom.API
             collectionToSign["access-key"] = accessKey;
 
             var stringToSign = String.Join("\n", collectionToSign.ToList().ConvertAll(kvp => kvp.Key + "=" + kvp.Value).ToArray());
-            return Convert.ToBase64String(new HMACSHA1(Encoding.UTF8.GetBytes(apiHashKey)).ComputeHash(Encoding.UTF8.GetBytes(stringToSign.ToLower())));
+
+            using (var hasher = new HMACSHA1(Encoding.UTF8.GetBytes(apiHashKey)))
+            {
+                return Convert.ToBase64String(hasher.ComputeHash(Encoding.UTF8.GetBytes(stringToSign.ToLower())));
+            }
         }
 
 
