@@ -12,7 +12,7 @@
         {
             static void Main(string[] args)
             {
-                var client = new SlideRoomClient("api key "access key "email address "organization code");
+                var client = new SlideRoomClient("api key", "access key", "email address", "organization code");
 
                 var requestRes = client.Export.Request("export name", SlideRoom.API.Resources.RequestFormat.Txt);
                 PrintExport(client, requestRes.Token);
