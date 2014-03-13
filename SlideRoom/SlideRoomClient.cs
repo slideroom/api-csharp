@@ -19,21 +19,21 @@ namespace SlideRoom.API
 
         private string BaseUrl { get; set; }
 
-        private string APIKey { get; set; }
-        private string AccessKey { get; set; }
+        private string APIHashKey { get; set; }
+        private string APIAccessKey { get; set; }
         private string OrganizationCode { get; set; }
         private string EmailAddress { get; set; }
         private TimeSpan RequestLifespan { get; set; }
 
         public Resources.Export Export { get; private set; }
 
-        public SlideRoomClient(string apiKey, string accessKey, string orgainationCode, string emailAddress, string baseUrl)
+        public SlideRoomClient(string apiHashKey, string apiAccessKey, string organizationCode, string emailAddress, string baseUrl)
         {
             BaseUrl = baseUrl.TrimEnd('/');
 
-            APIKey = apiKey;
-            AccessKey = accessKey;
-            OrganizationCode = orgainationCode;
+            APIHashKey = apiHashKey;
+            APIAccessKey = apiAccessKey;
+            OrganizationCode = organizationCode;
             EmailAddress = emailAddress;
 
             RequestLifespan = TimeSpan.FromMinutes(1);
@@ -41,16 +41,16 @@ namespace SlideRoom.API
             SetUpResources();
         }
 
-        public SlideRoomClient(string apiKey, string accessKey, string orgainationCode, string emailAddress)
-            : this(apiKey, accessKey, orgainationCode, emailAddress, DEFAULT_BASE_URL)
+        public SlideRoomClient(string apiHashKey, string apiAccessKey, string organizationCode, string emailAddress)
+            : this(apiHashKey, apiAccessKey, organizationCode, emailAddress, DEFAULT_BASE_URL)
         {
         }
 
         // If an empty parameter list, try to set up via app settings
         public SlideRoomClient()
             :this(
-                ConfigurationManager.AppSettings["SlideRoomApiKey"] ?? "",
-                ConfigurationManager.AppSettings["SlideRoomAccessKey"] ?? "",
+                ConfigurationManager.AppSettings["SlideRoomApiHashKey"] ?? "",
+                ConfigurationManager.AppSettings["SlideRoomApiAccessKey"] ?? "",
                 ConfigurationManager.AppSettings["SlideRoomEmailAddress"] ?? "",
                 ConfigurationManager.AppSettings["SlideRoomOrganizationCode"] ?? "",
                 ConfigurationManager.AppSettings["SlideRoomBaseURL"] ?? DEFAULT_BASE_URL)
@@ -64,14 +64,14 @@ namespace SlideRoom.API
         }
 
 
-        public static string SignParameters(NameValueCollection nvc, string apiHashKey, string accessKey)
+        public static string SignParameters(NameValueCollection nvc, string apiHashKey, string apiAccessKey)
         {
             var collectionToSign = new SortedDictionary<string, string>();            
             foreach (var key in nvc.AllKeys)
             {
                 collectionToSign[key] = nvc[key];
             }
-            collectionToSign["access-key"] = accessKey;
+            collectionToSign["access-key"] = apiAccessKey;
 
             var stringToSign = String.Join("\n", collectionToSign.ToList().ConvertAll(kvp => kvp.Key + "=" + kvp.Value).ToArray());
 
@@ -97,7 +97,7 @@ namespace SlideRoom.API
                 paramBuilder[key] = paramsToSend[key];
             }
 
-            var signature = SignParameters(paramBuilder, APIKey, AccessKey);
+            var signature = SignParameters(paramBuilder, APIHashKey, APIAccessKey);
 
             paramBuilder["signature"] = signature;
 
