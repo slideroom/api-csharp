@@ -43,6 +43,77 @@ namespace SlideRoomTest.Resources.Export
             }
         }
 
+        [TestMethod]
+        public void GoodRequestTsv()
+        {
+            var res = new MockResponse()
+            {
+                ContentType = "application/json",
+                Code = System.Net.HttpStatusCode.OK,
+                Body = @"{ ""token"": 123, ""submissions"": 456, ""message"": ""test""}"
+            };
+
+            using (var c = new TestClient(res))
+            {
+                var actualResult = c.Client.Export.Request("test", SlideRoom.API.Resources.RequestFormat.Tsv);
+
+                // test the request
+                var queryString = c.Request.QueryString;
+                GeneralClient.TestRequiredParameters(queryString);
+
+                queryString.ContainsAndEquals("export", "test");
+                queryString.ContainsAndEquals("format", "tsv");
+                queryString.NotContains("ss");
+
+                var expectedResult = new SlideRoom.API.Resources.RequestResult()
+                {
+                    Message = "test",
+                    Submissions = 456,
+                    Token = 123
+                };
+
+                Assert.AreEqual(expectedResult.Message, actualResult.Message);
+                Assert.AreEqual(expectedResult.Submissions, actualResult.Submissions);
+                Assert.AreEqual(expectedResult.Token, actualResult.Token);
+            }
+        }
+
+
+        [TestMethod]
+        public void GoodRequestXlsx()
+        {
+            var res = new MockResponse()
+            {
+                ContentType = "application/json",
+                Code = System.Net.HttpStatusCode.OK,
+                Body = @"{ ""token"": 123, ""submissions"": 456, ""message"": ""test""}"
+            };
+
+            using (var c = new TestClient(res))
+            {
+                var actualResult = c.Client.Export.Request("test", SlideRoom.API.Resources.RequestFormat.Xlsx);
+
+                // test the request
+                var queryString = c.Request.QueryString;
+                GeneralClient.TestRequiredParameters(queryString);
+
+                queryString.ContainsAndEquals("export", "test");
+                queryString.ContainsAndEquals("format", "xlsx");
+                queryString.NotContains("ss");
+
+                var expectedResult = new SlideRoom.API.Resources.RequestResult()
+                {
+                    Message = "test",
+                    Submissions = 456,
+                    Token = 123
+                };
+
+                Assert.AreEqual(expectedResult.Message, actualResult.Message);
+                Assert.AreEqual(expectedResult.Submissions, actualResult.Submissions);
+                Assert.AreEqual(expectedResult.Token, actualResult.Token);
+            }
+        }
+
 
         [TestMethod]
         public void GoodRequestWithSavedSearch()
