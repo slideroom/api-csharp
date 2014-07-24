@@ -29,6 +29,7 @@ namespace SlideRoomTest.Resources.Export
                 queryString.ContainsAndEquals("export", "test");
                 queryString.ContainsAndEquals("format", "csv");
                 queryString.NotContains("ss");
+                queryString.NotContains("since");
 
                 var expectedResult = new SlideRoom.API.Resources.RequestResult()
                 {
@@ -64,6 +65,7 @@ namespace SlideRoomTest.Resources.Export
                 queryString.ContainsAndEquals("export", "test");
                 queryString.ContainsAndEquals("format", "tsv");
                 queryString.NotContains("ss");
+                queryString.NotContains("since");
 
                 var expectedResult = new SlideRoom.API.Resources.RequestResult()
                 {
@@ -100,6 +102,7 @@ namespace SlideRoomTest.Resources.Export
                 queryString.ContainsAndEquals("export", "test");
                 queryString.ContainsAndEquals("format", "xlsx");
                 queryString.NotContains("ss");
+                queryString.NotContains("since");
 
                 var expectedResult = new SlideRoom.API.Resources.RequestResult()
                 {
@@ -114,6 +117,83 @@ namespace SlideRoomTest.Resources.Export
             }
         }
 
+        [TestMethod]
+        public void GoodRequestWithSince()
+        {
+            var res = new MockResponse()
+            {
+                ContentType = "application/json",
+                Code = System.Net.HttpStatusCode.OK,
+                Body = @"{ ""token"": 123, ""submissions"": 456, ""message"": ""test""}"
+            };
+
+            var since = DateTime.Now;
+            var sinceVal = (long)((TimeSpan)(since.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0))).TotalSeconds;
+
+            using (var c = new TestClient(res))
+            {
+                var actualResult = c.Client.Export.Request("test", SlideRoom.API.Resources.RequestFormat.Csv, null, since);
+
+                // test the request too..
+                var queryString = c.Request.QueryString;
+                GeneralClient.TestRequiredParameters(queryString);
+
+                queryString.ContainsAndEquals("export", "test");
+                queryString.ContainsAndEquals("format", "csv");
+                queryString.NotContains("ss");
+                queryString.ContainsAndEquals("since", sinceVal.ToString());
+
+                var expectedResult = new SlideRoom.API.Resources.RequestResult()
+                {
+                    Message = "test",
+                    Submissions = 456,
+                    Token = 123
+                };
+
+                Assert.AreEqual(expectedResult.Message, actualResult.Message);
+                Assert.AreEqual(expectedResult.Submissions, actualResult.Submissions);
+                Assert.AreEqual(expectedResult.Token, actualResult.Token);
+            }
+        }
+
+        [TestMethod]
+        public void GoodRequestWithSinceAndSavedSearch()
+        {
+            var res = new MockResponse()
+            {
+                ContentType = "application/json",
+                Code = System.Net.HttpStatusCode.OK,
+                Body = @"{ ""token"": 123, ""submissions"": 456, ""message"": ""test""}"
+            };
+
+            var since = DateTime.Now;
+            var sinceVal = (long)((TimeSpan)(since.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0))).TotalSeconds;
+
+            using (var c = new TestClient(res))
+            {
+                var actualResult = c.Client.Export.Request("test", SlideRoom.API.Resources.RequestFormat.Csv, "saved search", since);
+
+                // test the request too..
+                var queryString = c.Request.QueryString;
+                GeneralClient.TestRequiredParameters(queryString);
+
+                queryString.ContainsAndEquals("export", "test");
+                queryString.ContainsAndEquals("format", "csv");
+                queryString.ContainsAndEquals("ss", "saved search");
+                queryString.ContainsAndEquals("since", sinceVal.ToString());
+
+                var expectedResult = new SlideRoom.API.Resources.RequestResult()
+                {
+                    Message = "test",
+                    Submissions = 456,
+                    Token = 123
+                };
+
+                Assert.AreEqual(expectedResult.Message, actualResult.Message);
+                Assert.AreEqual(expectedResult.Submissions, actualResult.Submissions);
+                Assert.AreEqual(expectedResult.Token, actualResult.Token);
+            }
+        }
 
         [TestMethod]
         public void GoodRequestWithSavedSearch()
@@ -136,6 +216,7 @@ namespace SlideRoomTest.Resources.Export
                 queryString.ContainsAndEquals("export", "test");
                 queryString.ContainsAndEquals("format", "csv");
                 queryString.ContainsAndEquals("ss", "saved search");
+                queryString.NotContains("since");
 
                 var expectedResult = new SlideRoom.API.Resources.RequestResult()
                 {

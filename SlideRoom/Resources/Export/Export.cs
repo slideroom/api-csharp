@@ -15,7 +15,7 @@ namespace SlideRoom.API.Resources
             client = c;
         }
 
-        public RequestResult Request(string exportName, RequestFormat format, string savedSearch = null)
+        public RequestResult Request(string exportName, RequestFormat format, string savedSearch = null, DateTime? since = null)
         {
             var nvc = new NameValueCollection();
             nvc["export"] = exportName;
@@ -24,6 +24,12 @@ namespace SlideRoom.API.Resources
             if (!String.IsNullOrEmpty(savedSearch))
             {
                 nvc["ss"] = savedSearch;
+            }
+
+            if (since.HasValue)
+            {
+                var sinceVal = (long)((TimeSpan)(since.Value.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0))).TotalSeconds;
+                nvc["since"] = sinceVal.ToString();
             }
 
             return client.GetExpectedJSONResult<RequestResult>("export/request", nvc);
