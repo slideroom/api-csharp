@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>SlideRoom</id>
-        <version>0.0.1</version>
+        <version>0.0.8</version>
         <title>SlideRoom</title>
         <authors>Derek Pittsinger</authors>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,7 +13,9 @@
                 <dependency id="Newtonsoft.Json" version="5.0.8" />
             </group>
         </dependencies>
-        <references />
     </metadata>
-    <files />
+    <files>
+        <file src="bin\Release\Newtonsoft.Json.dll" target="lib\Newtonsoft.Json.dll" />
+        <file src="bin\Release\SlideRoom.dll" target="lib\SlideRoom.dll" />
+    </files>
 </package>
