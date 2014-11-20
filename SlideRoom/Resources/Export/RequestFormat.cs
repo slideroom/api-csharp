@@ -5,6 +5,6 @@
         Csv,
         Txt,
         Tsv,
-        Xlsx
+        Xlsx,
     }
 }

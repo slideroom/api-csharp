@@ -232,6 +232,32 @@ namespace SlideRoomTest.Resources.Export
         }
 
         [TestMethod]
+        public void GoodRequestWithPool()
+        {
+            var res = new MockResponse()
+            {
+                ContentType = "application/json",
+                Code = System.Net.HttpStatusCode.OK,
+                Body = @"{ ""token"": 123, ""submissions"": 456, ""message"": ""test""}"
+            };
+
+            using (var c = new TestClient(res))
+            {
+                var actualResult = c.Client.Export.Request("test", SlideRoom.API.Resources.RequestFormat.Csv, "saved search", null, SlideRoom.API.Resources.Pool.Archived);
+
+                // test the request too..
+                var queryString = c.Request.QueryString;
+                GeneralClient.TestRequiredParameters(queryString);
+
+                queryString.ContainsAndEquals("export", "test");
+                queryString.ContainsAndEquals("format", "csv");
+                queryString.ContainsAndEquals("ss", "saved search");
+                queryString.NotContains("since");
+                queryString.ContainsAndEquals("pool", "archived");
+            }
+        }
+
+        [TestMethod]
         public void BadRequest()
         {
             var res = new MockResponse()

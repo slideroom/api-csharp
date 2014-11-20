@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Export\Export.cs" />
+    <Compile Include="Resources\Export\Pool.cs" />
     <Compile Include="Resources\Export\RequestFormat.cs" />
     <Compile Include="SlideRoomAPIException.cs" />
     <Compile Include="SlideRoomClient.cs" />
